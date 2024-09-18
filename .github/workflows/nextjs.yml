@@ -30,8 +30,10 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: pnpm/action-setup@v4
+        name: Install pnpm
         with:
-          version: 9.10.0
+          version: 9
+          run_install: false
       - name: Checkout
         uses: actions/checkout@v4
       - name: Setup Node
@@ -49,8 +51,13 @@ jobs:
           # If source files changed but packages didn't, rebuild from a prior cache.
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json', '**/yarn.lock') }}-
+      - name: Install Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: 'pnpm'
       - name: Install dependencies
-        run: ${{ steps.detect-package-manager.outputs.manager }} ${{ steps.detect-package-manager.outputs.command }}
+        run: pnpm install
       - name: Build my App
         run: pnpm run build
       - name: Upload artifact
