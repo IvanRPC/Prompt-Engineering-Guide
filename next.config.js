@@ -22,5 +22,6 @@ module.exports = withNextra({
       use: ['@svgr/webpack']
     })
     return config
-  }
+  },
+  distDir: './out'
 })
